@@ -29,7 +29,7 @@ class GameState
   end
   
   def rank
-    @rank ||= final_state_rank || intermediate_state_rank
+    @rank ||= resultado_final || intermediate_state_rank
   end
 
   #Metodo chamando quando o turno pertence ao computador
@@ -42,15 +42,19 @@ class GameState
     moves.max{ |a, b| a.rank <=> b.rank }
   end
 
-  def final_state_rank
-    if final_state?
+#Metodo para retornar quem foi o vencedor
+  def resultado_final
+    #somente se ja estiver chegado no fim do jogo
+    if fim_jogo?
+      #retorna 0 se deu velha
       return 0 if velha?
+      #retorna 1 se X ganhou e -1 se O
       vencedor == "X" ? 1 : -1
     end
   end
 
 #Metodo que confere se acabou
-  def final_state?
+  def fim_jogo?
   #se teve ganhador ou deu velha retorna true
     vencedor || velha?
   end
@@ -131,7 +135,7 @@ class Game
 
   #Metodo para caso seja fim de jogo
   def turn
-    if @game_state.final_state?
+    if @game_state.fim_jogo?
       mostra_fim_jogo
 
       puts "Jogar novamente? (Sim)(Nao)"
@@ -169,16 +173,16 @@ class Game
     #Inicia string vazia para receber as entradas
     output = ""
     #Laco de o ate 8
-    0.upto(8) do |position|
+    0.upto(8) do |posicao|
 
-      output << " #{@game_state.board[position] || position} "
+      output << " #{@game_state.board[posicao] || posicao} "
 
       #confere o resto da divisao por 3
-      case position % 3
+      case posicao % 3
       #Se for 0 ou 1, precisa do pipe pq eh coluna esquerda ou meio
       when 0, 1 then output << "|"
       #Se for 2, precisa pular linha depois e ja colocar a linha
-      when 2 then output << "\n-----------\n" unless position == 8
+      when 2 then output << "\n-----------\n" unless posicao == 8
       end
     end
     #printa a string que contem o tabuleiro
