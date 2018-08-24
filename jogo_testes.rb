@@ -85,6 +85,7 @@ class GameState
 
 #funcao com as combinacoes vencedoras
   def vencedor
+
     @vencedor ||= [
      # combinacoes horizonatal
      [0, 1, 2],
@@ -105,7 +106,9 @@ class GameState
         board[positions[0]] ) || nil
     }.compact.first
     #@vencedor recebe X se ele tiver ganhado, ou o que completou a coluna
+    #se nao teve ganhador, permanece nil
   end
+
 end
 
 #Classe que verifica as possibilidades futuras
@@ -113,11 +116,13 @@ class ArvoreJogo
   def generate
     #Ja passa o jogador atual e o tabuleiro no metodo initialize
     initial_game_state = GameState.new('X', Array.new(9))
-    generate_moves(initial_game_state)
+    gerador_movimentos(initial_game_state)
     initial_game_state
   end
 
-  def generate_moves(game_state)
+
+
+  def gerador_movimentos(game_state)
     next_player = (game_state.jogador_atual == 'X' ? 'O' : 'X')
     game_state.board.each_with_index do |player_at_position, position|
       unless player_at_position
@@ -126,7 +131,7 @@ class ArvoreJogo
 
         next_game_state = (GameState.cache.states[next_board] ||= GameState.new(next_player, next_board))
         game_state.moves << next_game_state
-        generate_moves(next_game_state)
+        gerador_movimentos(next_game_state)
       end
     end
   end
