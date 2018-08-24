@@ -84,9 +84,11 @@ class EstadoJogo
     ranks = movimentos.collect{ |estado_jogo| estado_jogo.rank }
     if jogador_atual == 'X'
       #retorna ranks.max se for o computador
+      #para maximizar a jogada dele
       ranks.max
     else
       #retorna ranks.min se for a jogada do humano
+      #para minimizar a jogada do humano
       ranks.min
     end
   end  
@@ -114,7 +116,8 @@ class EstadoJogo
         tabuleiro[positions[0]] ) || nil
     }.compact.first
     #@vencedor recebe X se ele tiver ganhado, ou o que completou a coluna
-    #se nao teve ganhador, permanece nil
+    #se nao teve ganhador, permanece nil, por isso so o primeiro char do vetor
+    #para a identificacao do vencedor
   end
 
 end
@@ -124,9 +127,9 @@ end
 class ArvoreJogo
   def generate
     #Ja passa o jogador atual e o tabuleiro no metodo initialize
-    initial_game_state = EstadoJogo.new('X', Array.new(9))
-    gerador_movimentos(initial_game_state)
-    initial_game_state
+    estado_inicial = EstadoJogo.new('X', Array.new(9))
+    gerador_movimentos(estado_inicial)
+    estado_inicial #retorna o tabuleiro criado
   end
 
 
@@ -167,7 +170,7 @@ class Jogo
   #Metodo para iniciar jogo
   def initialize
     
-  @estado_jogo = @initial_game_state = ArvoreJogo.new.generate
+  @estado_jogo = @estado_inicial = ArvoreJogo.new.generate
 
   end
 
@@ -183,7 +186,7 @@ class Jogo
       answer = gets.downcase
       if answer.downcase.strip == 'sim' || answer.downcase.strip == 's'
         #cria novo tabuleiro
-        @estado_jogo = @initial_game_state
+        @estado_jogo = @estado_inicial
         turno
       else#caso a resposta seja nao
         exit
