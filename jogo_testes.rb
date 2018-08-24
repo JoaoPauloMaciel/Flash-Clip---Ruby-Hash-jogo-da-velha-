@@ -1,9 +1,15 @@
-require 'benchmark'
+#Jogo da Velha usando Minimax
+#Implementado por:
+#José Luiz Corrêa Junior
+#Felippe Mangueira da Silva Sposito
+#Trabalho 1 de Inteligencia Artificial - 2018
 
-class GameState
+
+class EstadoJogo
   #criacao do metodo de acesso para varias variaveis de instacia, leitura e escrita
   attr_accessor :jogador_atual, :board, :moves, :rank
 
+#classe Cache
   class Cache
     #criacao do metodo de acesso, leitura e escrita
     attr_accessor :states
@@ -28,13 +34,14 @@ class GameState
     self.moves = []
   end
   
+  #Recebe true or false
   def rank
-    @rank ||= resultado_final || intermediate_state_rank
+    @rank ||= resultado_final || resultado_intermediario
   end
 
   #Metodo chamando quando o turno pertence ao computador
   def proximo_movimento
-  #uso da nave espacial (<=>)
+  #Uso da nave espacial (<=>)
   #retorna -1 se a < b
   #retorna 0 se a = b
   #retorna 1 se a > b
@@ -45,6 +52,7 @@ class GameState
 #Metodo para retornar quem foi o vencedor
   def resultado_final
     #somente se ja estiver chegado no fim do jogo
+    #ja que tambem eh usado para checar melhor opcao
     if fim_jogo?
       #retorna 0 se deu velha
       return 0 if velha?
@@ -66,7 +74,9 @@ class GameState
 
   end
 
-  def intermediate_state_rank
+
+#Metodo para mostrar os resultados intermediarios para cada jogada "simulada"
+  def resultado_intermediario
     # recursion, baby
     ranks = moves.collect{ |game_state| game_state.rank }
     if jogador_atual == 'X'
@@ -80,6 +90,7 @@ class GameState
 
 #funcao com as combinacoes vencedoras
   def vencedor
+
     @vencedor ||= [
      # combinacoes horizonatal
      [0, 1, 2],
@@ -99,28 +110,32 @@ class GameState
         board[positions[1]] == board[positions[2]] &&
         board[positions[0]] ) || nil
     }.compact.first
+    #@vencedor recebe X se ele tiver ganhado, ou o que completou a coluna
+    #se nao teve ganhador, permanece nil
   end
+
 end
 
 #Classe que verifica as possibilidades futuras
 class ArvoreJogo
   def generate
     #Ja passa o jogador atual e o tabuleiro no metodo initialize
-    initial_game_state = GameState.new('X', Array.new(9))
-    generate_moves(initial_game_state)
+    initial_game_state = EstadoJogo.new('X', Array.new(9))
+    gerador_movimentos(initial_game_state)
     initial_game_state
   end
 
-  def generate_moves(game_state)
+
+
+  def gerador_movimentos(game_state)
     next_player = (game_state.jogador_atual == 'X' ? 'O' : 'X')
     game_state.board.each_with_index do |player_at_position, position|
       unless player_at_position
         next_board = game_state.board.dup
         next_board[position] = game_state.jogador_atual
-
-        next_game_state = (GameState.cache.states[next_board] ||= GameState.new(next_player, next_board))
+        next_game_state = (EstadoJogo.cache.states[next_board] ||= EstadoJogo.new(next_player, next_board))
         game_state.moves << next_game_state
-        generate_moves(next_game_state)
+        gerador_movimentos(next_game_state)
       end
     end
   end
@@ -130,7 +145,9 @@ end
 class Game
   #Metodo para iniciar jogo
   def initialize
-    puts Benchmark.measure{ @game_state = @initial_game_state = ArvoreJogo.new.generate }
+    
+  @game_state = @initial_game_state = ArvoreJogo.new.generate
+
   end
 
   #Metodo para caso seja fim de jogo
@@ -157,18 +174,18 @@ class Game
       puts "Jogada do computador(X):"
       #mostra o tabuleiro com a jogada do computador
       mostra_tabuleiro
-      turn
-    else
+      turn#Vai para o proximo turno
+    else#se tiver sido a jogada do humano
       jogada_humano
       puts "Seu movimento:"
       #mostra o tabuleiro com a jogada do humano
       mostra_tabuleiro
       puts ""
-      turn
+      turn#vai para o proximo turno
     end
   end
   
-#Mostra o tabuleiro
+  #Metodo para mostrar o tabuleiro
   def mostra_tabuleiro
     #Inicia string vazia para receber as entradas
     saida = ""
