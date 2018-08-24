@@ -168,18 +168,18 @@ class Game
       puts "Jogada do computador(X):"
       #mostra o tabuleiro com a jogada do computador
       mostra_tabuleiro
-      turn
-    else
+      turn#Vai para o proximo turno
+    else#se tiver sido a jogada do humano
       jogada_humano
       puts "Seu movimento:"
       #mostra o tabuleiro com a jogada do humano
       mostra_tabuleiro
       puts ""
-      turn
+      turn#vai para o proximo turno
     end
   end
   
-#Mostra o tabuleiro
+  #Metodo para mostrar o tabuleiro
   def mostra_tabuleiro
     #Inicia string vazia para receber as entradas
     saida = ""
