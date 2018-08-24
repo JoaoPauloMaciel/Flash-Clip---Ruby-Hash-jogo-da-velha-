@@ -140,6 +140,7 @@ end
 class Game
   #Metodo para iniciar jogo
   def initialize
+    #Metodo benchmark para mostrar quanto demorou para a primeira busca
     puts Benchmark.measure{ @game_state = @initial_game_state = ArvoreJogo.new.generate }
   end
 
