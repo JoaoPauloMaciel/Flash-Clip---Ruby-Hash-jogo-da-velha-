@@ -10,7 +10,7 @@ end
 
 #as variaveis de instancia so podem ser usadas dentro da classe mas em todos os metodos
 
-roger = Cachorro.new('X', Array.new(9))
+roger = Cachorro.new
 
 roger.setar_nome
 roger.falar

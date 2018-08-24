@@ -28,13 +28,14 @@ class GameState
     self.moves = []
   end
   
+  #Recebe true or false
   def rank
-    @rank ||= resultado_final || intermediate_state_rank
+    @rank ||= resultado_final || resultado_intermediario
   end
 
   #Metodo chamando quando o turno pertence ao computador
   def proximo_movimento
-  #uso da nave espacial (<=>)
+  #Uso da nave espacial (<=>)
   #retorna -1 se a < b
   #retorna 0 se a = b
   #retorna 1 se a > b
@@ -45,6 +46,7 @@ class GameState
 #Metodo para retornar quem foi o vencedor
   def resultado_final
     #somente se ja estiver chegado no fim do jogo
+    #ja que tambem eh usado para checar melhor opcao
     if fim_jogo?
       #retorna 0 se deu velha
       return 0 if velha?
@@ -66,7 +68,9 @@ class GameState
 
   end
 
-  def intermediate_state_rank
+
+#Metodo para mostrar os resultados intermediarios para cada jogada "simulada"
+  def resultado_intermediario
     # recursion, baby
     ranks = moves.collect{ |game_state| game_state.rank }
     if jogador_atual == 'X'
