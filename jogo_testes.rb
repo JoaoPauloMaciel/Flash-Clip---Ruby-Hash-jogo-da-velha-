@@ -7,7 +7,7 @@
 class EstadoJogo
   #criacao do metodo de acesso para varias variaveis de instacia, leitura e escrita
   #Visiveis a todos os metodos
-  attr_accessor :jogador_atual, :board, :movimentos, :rank
+  attr_accessor :jogador_atual, :tabuleiro, :movimentos, :rank
 
 #classe Cache
   class Cache
@@ -27,10 +27,10 @@ class EstadoJogo
 
   #metodo initialize, para definicao dos parametros
   #quando for criado um objeto ja chama esse metodo, automaticamente
-  def initialize(jogador_atual, board)
+  def initialize(jogador_atual, tabuleiro)
     #metodo self para chamar o metodo de acesso das variaveis de instancia
     self.jogador_atual = jogador_atual
-    self.board = board
+    self.tabuleiro = tabuleiro
     #inicializa o vetor chamado movimentos que vai receber as jogadas
     self.movimentos = []
   end
@@ -71,7 +71,7 @@ class EstadoJogo
 #metodo que confere se deu velha e retorna true ou false
   def velha?
     #Tira nil com .compact e conta quantos elementos tem
-    board.compact.size == 9 && vencedor.nil?
+    tabuleiro.compact.size == 9 && vencedor.nil?
 
   end
 
@@ -107,9 +107,9 @@ class EstadoJogo
      [0, 4, 8],
      [6, 4, 2]
     ].collect { |positions|
-      ( board[positions[0]] == board[positions[1]] &&
-        board[positions[1]] == board[positions[2]] &&
-        board[positions[0]] ) || nil
+      ( tabuleiro[positions[0]] == tabuleiro[positions[1]] &&
+        tabuleiro[positions[1]] == tabuleiro[positions[2]] &&
+        tabuleiro[positions[0]] ) || nil
     }.compact.first
     #@vencedor recebe X se ele tiver ganhado, ou o que completou a coluna
     #se nao teve ganhador, permanece nil
@@ -134,11 +134,11 @@ class ArvoreJogo
     #Se o atual for X, o proximo é O senao o Proximo é X
     next_player = (estado_jogo.jogador_atual == 'X' ? 'O' : 'X')
 
-    estado_jogo.board.each_with_index do |player_at_position, indice_posicao|
+    estado_jogo.tabuleiro.each_with_index do |player_at_position, indice_posicao|
 
       unless player_at_position
         #uso do metodo dup para duplicar o jogo atual
-        next_board = estado_jogo.board.dup
+        next_board = estado_jogo.tabuleiro.dup
 
         next_board[indice_posicao] = estado_jogo.jogador_atual
 
@@ -215,7 +215,7 @@ class Jogo
     #Laco de o ate 8 para as posicoes do tabuleiro
     0.upto(8) do |posicao|
       #Acrescente coisas na string de saida
-      saida << " #{@estado_jogo.board[posicao] || posicao} "
+      saida << " #{@estado_jogo.tabuleiro[posicao] || posicao} "
 
       #confere o resto da divisao por 3
       case posicao % 3
@@ -235,7 +235,7 @@ class Jogo
     #Le entrada do usuario
     escolha = gets
     #Confere se o movimento é valido, retorna true ou false
-    move = @estado_jogo.movimentos.find{ |estado_jogo| estado_jogo.board[escolha.to_i] == 'O' }
+    move = @estado_jogo.movimentos.find{ |estado_jogo| estado_jogo.tabuleiro[escolha.to_i] == 'O' }
     if move#Caso seja uma posicao valida
       @estado_jogo = move
     else#Retorna metodo ate posicao valida
