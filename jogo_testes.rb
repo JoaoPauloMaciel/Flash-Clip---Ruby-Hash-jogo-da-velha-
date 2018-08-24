@@ -161,7 +161,7 @@ class ArvoreJogo
 end
 
 #Classe jogo
-class Game
+class Jogo
   #Metodo para iniciar jogo
   def initialize
     
@@ -171,10 +171,13 @@ class Game
 
   #Metodo para caso seja fim de jogo
   def turn
-    if @game_state.fim_jogo?
-      mostra_fim_jogo
 
+    #caso o retorno do metodo fim_jogo? seja true
+    if @game_state.fim_jogo?
+      #mostra fim do jogo se estiver acabado mesmo
+      mostra_fim_jogo
       puts "Jogar novamente? (Sim)(Nao)"
+      #Pega valor lido do usuario e aplica metodo para deixar tudo minusculo
       answer = gets.downcase
       if answer.downcase.strip == 'sim' || answer.downcase.strip == 's'
         #cria novo tabuleiro
@@ -257,4 +260,4 @@ def mostra_fim_jogo
 end
 
 #Novo turno
-Game.new.turn
+Jogo.new.turn
