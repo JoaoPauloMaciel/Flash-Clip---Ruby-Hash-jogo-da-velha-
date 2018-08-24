@@ -25,24 +25,28 @@ class GameState
     @rank ||= final_state_rank || intermediate_state_rank
   end
 
-  # this is only ever called when it's the AI's (the X player) turn
+  #Metodo chamando quando o turno pertence ao computador
   def next_move
     moves.max{ |a, b| a.rank <=> b.rank }
   end
 
   def final_state_rank
     if final_state?
-      return 0 if draw?
-      winner == "X" ? 1 : -1
+      return 0 if velha?
+      vencedor == "X" ? 1 : -1
     end
   end
 
+#Metodo que confere se acabou
   def final_state?
-    winner || draw?
+  #se teve ganhador ou deu velha retorna true
+    vencedor || velha?
   end
 
-  def draw?
-    board.compact.size == 9 && winner.nil?
+#metodo que confere se deu velha
+  def velha?
+
+    board.compact.size == 9 && vencedor.nil?
   end
 
   def intermediate_state_rank
@@ -56,8 +60,8 @@ class GameState
   end  
 
 #funcao com as combinacoes vencedoras
-  def winner
-    @winner ||= [
+  def vencedor
+    @vencedor ||= [
      # combinacoes horizonatal
      [0, 1, 2],
      [3, 4, 5],
@@ -113,7 +117,8 @@ class Game
   #Metodo para caso seja fim de jogo
   def turn
     if @game_state.final_state?
-      describe_final_game_state
+      mostra_fim_jogo
+
       puts "Jogar novamente? (Sim)(Nao)"
       answer = gets.downcase
       if answer.downcase.strip == 'sim'
@@ -127,6 +132,7 @@ class Game
 
 
     #checa a quem pertence a proxima jogada
+    #Se pertence 
     if @game_state.current_player == 'X'
       puts "\n==============="
       @game_state = @game_state.next_move
@@ -134,7 +140,7 @@ class Game
       render_board
       turn
     else
-      get_human_move
+      jogada_humano
       puts "Seu movimento:"
       render_board
       puts ""
@@ -157,26 +163,26 @@ class Game
   end
 
 #Metodo para pegar posicao escolhida pelo jogador
-  def get_human_move
-    puts "Enter square # to place your 'O' in:"
+  def jogada_humano
+    puts "Digite o numero para marcar:"
     position = gets
     #Confere se o movimento é valido, retorna true ou false
     move = @game_state.moves.find{ |game_state| game_state.board[position.to_i] == 'O' }
     if move#Caso seja uma posicao valida
       @game_state = move
     else#Retorna metodo ate posicao valida
-      puts "That's not a valid move"
-      get_human_move
+      puts "Movimento invalido!"
+      jogada_humano
     end
   end
 
 #Metodo para mostar resultado do jogo
-def describe_final_game_state
+def mostra_fim_jogo
     #caso seja velha
-    if @game_state.draw?
-      puts "It was a draw!"
+    if @game_state.velha?
+      puts "Deu velha!"
     #caso X(computador) ganhou
-    elsif @game_state.winner == 'X'
+    elsif @game_state.vencedor == 'X'
       puts "X Ganhou"
     #caso O(Jogador) ganhou
     else
