@@ -171,22 +171,22 @@ class Game
 #Mostra o tabuleiro
   def mostra_tabuleiro
     #Inicia string vazia para receber as entradas
-    output = ""
-    #Laco de o ate 8
+    saida = ""
+    #Laco de o ate 8 para as posicoes do tabuleiro
     0.upto(8) do |posicao|
-
-      output << " #{@game_state.board[posicao] || posicao} "
+      #Acrescente coisas na string de saida
+      saida << " #{@game_state.board[posicao] || posicao} "
 
       #confere o resto da divisao por 3
       case posicao % 3
       #Se for 0 ou 1, precisa do pipe pq eh coluna esquerda ou meio
-      when 0, 1 then output << "|"
+      when 0, 1 then saida << "|"
       #Se for 2, precisa pular linha depois e ja colocar a linha
-      when 2 then output << "\n-----------\n" unless posicao == 8
+      when 2 then saida << "\n-----------\n" unless posicao == 8
       end
     end
     #printa a string que contem o tabuleiro
-    puts output
+    puts saida
   end
 
 #Metodo para pegar posicao escolhida pelo jogador
