@@ -61,8 +61,10 @@ class GameState
     # recursion, baby
     ranks = moves.collect{ |game_state| game_state.rank }
     if current_player == 'X'
+      #retorna ranks.max se for o computador
       ranks.max
     else
+      #retorna ranks.min se for a jogada do humano
       ranks.min
     end
   end  
@@ -91,8 +93,8 @@ class GameState
   end
 end
 
-
-class GameTree
+#Classe que verifica as possibilidades futuras
+class ArvoreJogo
   def generate
     #Ja passa o jogador atual e o tabuleiro no metodo initialize
     initial_game_state = GameState.new('X', Array.new(9))
@@ -119,7 +121,7 @@ end
 class Game
   #Metodo para iniciar jogo
   def initialize
-    puts Benchmark.measure{ @game_state = @initial_game_state = GameTree.new.generate }
+    puts Benchmark.measure{ @game_state = @initial_game_state = ArvoreJogo.new.generate }
   end
 
   #Metodo para caso seja fim de jogo
@@ -144,11 +146,13 @@ class Game
       puts "\n•••••••••••••••••••••••"
       @game_state = @game_state.next_move
       puts "Jogada do computador(X):"
+      #mostra o tabuleiro com a jogada do computador
       mostra_tabuleiro
       turn
     else
       jogada_humano
       puts "Seu movimento:"
+      #mostra o tabuleiro com a jogada do humano
       mostra_tabuleiro
       puts ""
       turn
@@ -187,6 +191,7 @@ class Game
       @game_state = move
     else#Retorna metodo ate posicao valida
       puts "Movimento invalido!"
+      #chama o metodo jogada_humano de novo
       jogada_humano
     end
   end
