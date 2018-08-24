@@ -50,10 +50,11 @@ class GameState
     vencedor || velha?
   end
 
-#metodo que confere se deu velha
+#metodo que confere se deu velha e retorna true ou false
   def velha?
-
+    #Tira nil com .compact e conta quantos elementos tem
     board.compact.size == 9 && vencedor.nil?
+
   end
 
   def intermediate_state_rank
