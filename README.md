@@ -14,3 +14,17 @@ O programa utiliza cálculo de possibilidades através do algoritmo de lógica m
 
 ####Arquivos e módulos
 O programa é composto de apenas um arquivo, `jogo.rb` , que consiste de um código ruby responsável por calcular as alternativas de jogada e interagir com o jogador.
+
+##Linguagem
+A linguagem utilizada foi Ruby, pela riqueza de métodos e velocidade de escrita de código (dinamicidade). A possibilidade de uso de métodos de bibliotecas prontas também foi considerada.
+
+###Código
+O código foi dividido em métodos que serão colocados abaixo:
+
+####mostra_fim_jogo
+Imprime os resultados do jogo;
+
+####jogada_humano
+Método que recebe o input das jogadas do usuário; manda depois para o método de cálculo de possibilidades; Também verifica jogadas inválidas.
+
+####
