@@ -169,8 +169,8 @@ class Jogo
 
   end
 
-  #Metodo para caso seja fim de jogo
-  def turn
+  #metodo turno para finalizar, dar direiro de jogar e coisas assim
+  def turno
 
     #caso o retorno do metodo fim_jogo? seja true
     if @game_state.fim_jogo?
@@ -182,7 +182,7 @@ class Jogo
       if answer.downcase.strip == 'sim' || answer.downcase.strip == 's'
         #cria novo tabuleiro
         @game_state = @initial_game_state
-        turn
+        turno
       else#caso a resposta seja nao
         exit
       end
@@ -196,15 +196,16 @@ class Jogo
       puts "Jogada do computador(X):"
       #mostra o tabuleiro com a jogada do computador
       mostra_tabuleiro
-      turn#Vai para o proximo turno
+      turno#Vai para o proximo turno
     else#se tiver sido a jogada do humano
       jogada_humano
       puts "Seu movimento:"
       #mostra o tabuleiro com a jogada do humano
       mostra_tabuleiro
       puts ""
-      turn#vai para o proximo turno
+      turno#vai para o proximo turno
     end
+
   end
   
   #Metodo para mostrar o tabuleiro
@@ -260,4 +261,4 @@ def mostra_fim_jogo
 end
 
 #Novo turno
-Jogo.new.turn
+Jogo.new.turno
