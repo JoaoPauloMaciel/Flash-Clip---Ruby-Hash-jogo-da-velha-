@@ -78,7 +78,7 @@ class EstadoJogo
 #Metodo para mostrar os resultados intermediarios para cada jogada "simulada"
   def resultado_intermediario
     # recursion, baby
-    ranks = moves.collect{ |game_state| game_state.rank }
+    ranks = moves.collect{ |estado_jogo| estado_jogo.rank }
     if jogador_atual == 'X'
       #retorna ranks.max se for o computador
       ranks.max
@@ -128,25 +128,25 @@ class ArvoreJogo
 
 
   #Metodo recursivo para gerar os movimentos futuros e avaliar resultados
-  def gerador_movimentos(game_state)
+  def gerador_movimentos(estado_jogo)
     #Encontra qual é o proximo jogador por meio do atual
     #Se o atual for X, o proximo é O senao o Proximo é X
-    next_player = (game_state.jogador_atual == 'X' ? 'O' : 'X')
+    next_player = (estado_jogo.jogador_atual == 'X' ? 'O' : 'X')
 
-    game_state.board.each_with_index do |player_at_position, indice_posicao|
+    estado_jogo.board.each_with_index do |player_at_position, indice_posicao|
 
       unless player_at_position
         #uso do metodo dup para duplicar o jogo atual
-        next_board = game_state.board.dup
+        next_board = estado_jogo.board.dup
 
-        next_board[indice_posicao] = game_state.jogador_atual
+        next_board[indice_posicao] = estado_jogo.jogador_atual
 
         #sit proximo recebe o tabuleiro do proximo jogo
         sit_proximo = (EstadoJogo.cache.states[next_board] ||= EstadoJogo.new(next_player, next_board))
 
 
 
-        game_state.moves << sit_proximo
+        estado_jogo.moves << sit_proximo
 
         #Sendo um algoritmo recursivo ele  chama o proprio metodo
         #depois de ja ter gerado um das possibilidade
@@ -165,7 +165,7 @@ class Jogo
   #Metodo para iniciar jogo
   def initialize
     
-  @game_state = @initial_game_state = ArvoreJogo.new.generate
+  @estado_jogo = @initial_game_state = ArvoreJogo.new.generate
 
   end
 
@@ -173,7 +173,7 @@ class Jogo
   def turno
 
     #caso o retorno do metodo fim_jogo? seja true
-    if @game_state.fim_jogo?
+    if @estado_jogo.fim_jogo?
       #mostra fim do jogo se estiver acabado mesmo
       mostra_fim_jogo
       puts "Jogar novamente? (Sim)(Nao)"
@@ -181,7 +181,7 @@ class Jogo
       answer = gets.downcase
       if answer.downcase.strip == 'sim' || answer.downcase.strip == 's'
         #cria novo tabuleiro
-        @game_state = @initial_game_state
+        @estado_jogo = @initial_game_state
         turno
       else#caso a resposta seja nao
         exit
@@ -190,9 +190,9 @@ class Jogo
 
     #checa a quem pertence a proxima jogada
     #Se pertence 
-    if @game_state.jogador_atual == 'X'
+    if @estado_jogo.jogador_atual == 'X'
       puts "\n•••••••••••••••••••••••"
-      @game_state = @game_state.proximo_movimento
+      @estado_jogo = @estado_jogo.proximo_movimento
       puts "Jogada do computador(X):"
       #mostra o tabuleiro com a jogada do computador
       mostra_tabuleiro
@@ -215,7 +215,7 @@ class Jogo
     #Laco de o ate 8 para as posicoes do tabuleiro
     0.upto(8) do |posicao|
       #Acrescente coisas na string de saida
-      saida << " #{@game_state.board[posicao] || posicao} "
+      saida << " #{@estado_jogo.board[posicao] || posicao} "
 
       #confere o resto da divisao por 3
       case posicao % 3
@@ -235,9 +235,9 @@ class Jogo
     #Le entrada do usuario
     escolha = gets
     #Confere se o movimento é valido, retorna true ou false
-    move = @game_state.moves.find{ |game_state| game_state.board[escolha.to_i] == 'O' }
+    move = @estado_jogo.moves.find{ |estado_jogo| estado_jogo.board[escolha.to_i] == 'O' }
     if move#Caso seja uma posicao valida
-      @game_state = move
+      @estado_jogo = move
     else#Retorna metodo ate posicao valida
       puts "Movimento invalido!"
       #chama o metodo jogada_humano de novo
@@ -248,10 +248,10 @@ class Jogo
 #Metodo para mostar resultado do jogo
 def mostra_fim_jogo
     #caso seja velha
-    if @game_state.velha?
+    if @estado_jogo.velha?
       puts "Deu velha!"
     #caso X(computador) ganhou
-    elsif @game_state.vencedor == 'X'
+    elsif @estado_jogo.vencedor == 'X'
       puts "X Ganhou"
     #caso O(Jogador) ganhou
     else
