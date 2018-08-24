@@ -6,6 +6,8 @@
 > Felippe Mangueira da Silva Sposito - [GitHub](https://github.com/FelippeS) - <felippesposito@hotmail.com>
 > > Escrito em: Ruby
 
+##Princípio do problema
+O problema inicial era criar um Inteligência artificial para jogar um jogo através de uma interface de usuário, afim de cumprir o teste de turing. Para a realização do exercício foi utilizado a estratégia do jogo da veha. 
 
 ### Princípios básicos do funcionamento
 
@@ -35,12 +37,35 @@ O método recebe a casa escolhida pela IA, e imprime na tela para o usuário.
 #### `turno`
 Verifica se é final de jogo, e, caso não seja, localiza o dono do turno atual (IA ou usuário).
 
-### Classe `game_tree`
+### Classe `resultados_intermediarios`
+Classe responsável por realizar os cálculos (que faz o trabalho duro, por assim dizer) pois calcula todas as possíveis jogadas, e diminui as possibilidades à cada jogada do usuário.
 
-####
-
+####Subclasse recursiva
+~~~
+def resultado_intermediario
+    ranks = movimentos.collect{ |estado_jogo| estado_jogo.rank }
+    if jogador_atual == 'X'
+      #retorna ranks.max se for o computador
+      #para maximizar a jogada dele
+      ranks.max
+    else
+      #retorna ranks.min se for a jogada do humano
+      #para minimizar a jogada do humano
+      ranks.min
+    end
+~~~
+Faz os cálculos máximos e mínimos da vitória através de recursão, com o algoritmo minimax
+~~~
+class ArvoreJogo
+  def generate
+    #Ja passa o jogador atual e o tabuleiro no metodo initialize
+    estado_inicial = EstadoJogo.new('X', Array.new(9))
+    gerador_movimentos(estado_inicial)
+    estado_inicial #retorna o tabuleiro criado
+  end
+~~~
 ### Classe `EstadoJogo`
-Basicamente a classe Game_State é a classe que verifica, aloca e e maneja a memória dentro do programa, através das classes `Temporario`
+Basicamente a classe EstadoJogo é a classe que verifica, aloca e  maneja a memória dentro do programa, através das classes `Temporario`
 ~~~
   class Temporario
     #criacao do metodo de acesso, leitura e escrita
