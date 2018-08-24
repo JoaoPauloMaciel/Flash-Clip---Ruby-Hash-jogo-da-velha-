@@ -1,5 +1,5 @@
 require 'benchmark'
-
+#Teste de pull/commit - Felippe
 class GameState
   #criacao do metodo de acesso para varias variaveis de instacia, leitura e escrita
   attr_accessor :current_player, :board, :moves, :rank
