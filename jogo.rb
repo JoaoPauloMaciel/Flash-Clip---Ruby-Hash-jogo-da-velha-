@@ -210,7 +210,7 @@ def mostra_titulo
   puts("\t•Equipe: •José Luiz")
   puts("\t\t•Felippe")
 end                                                            
-
+#outro
 
 #chama funcao do titulo
 mostra_titulo
