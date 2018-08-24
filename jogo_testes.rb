@@ -18,13 +18,14 @@ class EstadoJogo
     end
   end
 
+  #Cria uma metaclasse, um objeto da propria classe
   class << self
     #criacao do metodo de acesso, leitura e escrita
-    attr_accessor :cache
+    attr_accessor :temporario
 
   end
   #cria objeto da classe Temporario
-  self.cache = Temporario.new
+  self.temporario = Temporario.new
 
   #metodo initialize, para definicao dos parametros
   #quando for criado um objeto ja chama esse metodo, automaticamente
@@ -144,7 +145,7 @@ class ArvoreJogo
         next_board[indice_posicao] = estado_jogo.jogador_atual
 
         #sit proximo recebe a simulacao do proximo jogo
-        sit_proximo = (EstadoJogo.cache.states[next_board] ||= EstadoJogo.new(next_player, next_board))
+        sit_proximo = (EstadoJogo.temporario.states[next_board] ||= EstadoJogo.new(next_player, next_board))
 
 
         estado_jogo.movimentos << sit_proximo
