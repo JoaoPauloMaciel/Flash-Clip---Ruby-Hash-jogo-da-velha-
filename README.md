@@ -9,12 +9,9 @@
 ###Princípios básicos do funcionamento
 
 O programa utiliza cálculo de possibilidades através do algoritmo de lógica minimax para prever os movimentos básicos do jogo da velha, e assim simular jogadas realistas.
+![Minimax](img/minimax.png)
 
 ####Arquivos e módulos
 O programa é composto de apenas um arquivo, `jogo.rb` , que consiste de um código ruby responsável por calcular as alternativas de jogada e interagir com o jogador.
 
 ##Código
-
-
-
-![Minimax](img/minimax.png)
