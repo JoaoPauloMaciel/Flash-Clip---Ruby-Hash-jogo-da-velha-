@@ -1,9 +1,11 @@
 require 'benchmark'
 
 class GameState
+  #criacao do metodo de acesso para varias variaveis de instacia, leitura e escrita
   attr_accessor :current_player, :board, :moves, :rank
 
   class Cache
+    #criacao do metodo de acesso, leitura e escrita
     attr_accessor :states
     def initialize
       @states = {}
@@ -11,11 +13,15 @@ class GameState
   end
 
   class << self
+    #criacao do metodo de acesso, leitura e escrita
     attr_accessor :cache
   end
   self.cache = Cache.new
 
+  #metodo initialize, para definicao dos parametros
+  #quando for criado um objeto ja chama esse metodo, automaticamente
   def initialize(current_player, board)
+    #metodo self para chamar o metodo de acesso das variaveis de instancia
     self.current_player = current_player
     self.board = board
     self.moves = []
@@ -121,7 +127,7 @@ class Game
 
       puts "Jogar novamente? (Sim)(Nao)"
       answer = gets.downcase
-      if answer.downcase.strip == 'sim'
+      if answer.downcase.strip == 'sim' || answer.downcase.strip == 's'
         #cria novo tabuleiro
         @game_state = @initial_game_state
         turn
@@ -130,41 +136,49 @@ class Game
       end
     end
 
-
     #checa a quem pertence a proxima jogada
     #Se pertence 
     if @game_state.current_player == 'X'
-      puts "\n==============="
+      puts "\n•••••••••••••••••••••••"
       @game_state = @game_state.next_move
-      puts "X's move:"
-      render_board
+      puts "Jogada do computador(X):"
+      mostra_tabuleiro
       turn
     else
       jogada_humano
       puts "Seu movimento:"
-      render_board
+
+      mostra_tabuleiro
       puts ""
       turn
     end
   end
   
 #Mostra o tabuleiro
-  def render_board
+  def mostra_tabuleiro
+    #Inicia string vazia para receber as entradas
     output = ""
+    #Laco de o ate 8
     0.upto(8) do |position|
+
       output << " #{@game_state.board[position] || position} "
+
+      #confere o resto da divisao por 3
       case position % 3
+      #Se for 0 ou 1, precisa do pipe pq eh coluna esquerda ou meio
       when 0, 1 then output << "|"
+      #Se for 2, precisa pular linha depois e ja colocar a linha
       when 2 then output << "\n-----------\n" unless position == 8
       end
     end
-    #printa o tabuleiro
+    #printa a string que contem o tabuleiro
     puts output
   end
 
 #Metodo para pegar posicao escolhida pelo jogador
   def jogada_humano
     puts "Digite o numero para marcar:"
+    #Le entrada do usuario
     position = gets
     #Confere se o movimento é valido, retorna true ou false
     move = @game_state.moves.find{ |game_state| game_state.board[position.to_i] == 'O' }
