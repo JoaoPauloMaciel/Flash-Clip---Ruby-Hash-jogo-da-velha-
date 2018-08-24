@@ -92,6 +92,7 @@ end
 
 class GameTree
   def generate
+    
     initial_game_state = GameState.new('X', Array.new(9))
     generate_moves(initial_game_state)
     initial_game_state
