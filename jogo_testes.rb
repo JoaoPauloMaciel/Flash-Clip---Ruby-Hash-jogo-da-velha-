@@ -128,7 +128,6 @@ class ArvoreJogo
       unless player_at_position
         next_board = game_state.board.dup
         next_board[position] = game_state.jogador_atual
-
         next_game_state = (GameState.cache.states[next_board] ||= GameState.new(next_player, next_board))
         game_state.moves << next_game_state
         gerador_movimentos(next_game_state)

@@ -6,3 +6,4 @@
 > > Escrito em: Ruby
 
 ![Minimax](img/minimax.png)
+
