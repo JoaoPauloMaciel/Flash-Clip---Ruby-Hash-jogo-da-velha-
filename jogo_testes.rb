@@ -103,6 +103,7 @@ class GameState
         board[positions[1]] == board[positions[2]] &&
         board[positions[0]] ) || nil
     }.compact.first
+    #ele vai retornar o primeiro elemento caso tenha completado, se for X, computador ganhou
   end
 end
 
