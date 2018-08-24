@@ -4,6 +4,7 @@ class GameState
   #criacao do metodo de acesso para varias variaveis de instacia, leitura e escrita
   attr_accessor :jogador_atual, :board, :moves, :rank
 
+#classe Cache
   class Cache
     #criacao do metodo de acesso, leitura e escrita
     attr_accessor :states
@@ -103,7 +104,7 @@ class GameState
         board[positions[1]] == board[positions[2]] &&
         board[positions[0]] ) || nil
     }.compact.first
-    #ele vai retornar o primeiro elemento caso tenha completado, se for X, computador ganhou
+    #@vencedor recebe X se ele tiver ganhado, ou o que completou a coluna
   end
 end
 
