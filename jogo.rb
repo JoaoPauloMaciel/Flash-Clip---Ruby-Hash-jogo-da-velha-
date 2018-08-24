@@ -204,15 +204,10 @@ def mostra_fim_jogo
   end
 end
 
-
-def mostra_titulo
+#Mostra titulo e equipe
   puts("->Jogo da Velha com Minimax!")
   puts("\t•Equipe: •José Luiz")
-  puts("\t\t•Felippe")
-end                                                            
-#outro
+  puts("\t\t•Felippe")                                                          
 
-#chama funcao do titulo
-mostra_titulo
 #Novo turno
 Game.new.turn
