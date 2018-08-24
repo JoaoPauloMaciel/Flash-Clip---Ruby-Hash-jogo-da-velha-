@@ -9,8 +9,8 @@ class EstadoJogo
   #Visiveis a todos os metodos
   attr_accessor :jogador_atual, :tabuleiro, :movimentos, :rank
 
-#classe Cache
-  class Cache
+#Classe para os dados temporarios das "simulacoes"
+  class Temporario
     #criacao do metodo de acesso, leitura e escrita
     attr_accessor :states
     def initialize
@@ -23,7 +23,8 @@ class EstadoJogo
     attr_accessor :cache
 
   end
-  self.cache = Cache.new
+  #cria objeto da classe Temporario
+  self.cache = Temporario.new
 
   #metodo initialize, para definicao dos parametros
   #quando for criado um objeto ja chama esse metodo, automaticamente
