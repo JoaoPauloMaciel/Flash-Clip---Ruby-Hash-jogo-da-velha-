@@ -1,3 +1,4 @@
+require 'benchmark'
 
 class GameState
   #criacao do metodo de acesso para varias variaveis de instacia, leitura e escrita
@@ -117,7 +118,7 @@ end
 class Game
   #Metodo para iniciar jogo
   def initialize
-    @game_state = @initial_game_state = GameTree.new.generate
+    puts Benchmark.measure{ @game_state = @initial_game_state = GameTree.new.generate }
   end
 
   #Metodo para caso seja fim de jogo
@@ -136,13 +137,14 @@ class Game
       end
     end
 
-    #Mostra o tabuleiro e de quem foi a jogada
+    #checa a quem pertence a proxima jogada
+    #Se pertence 
     if @game_state.current_player == 'X'
       puts "\n•••••••••••••••••••••••"
       @game_state = @game_state.next_move
       puts "Jogada do computador(X):"
       mostra_tabuleiro
-      
+      turn
     else
       jogada_humano
       puts "Seu movimento:"
@@ -203,11 +205,6 @@ def mostra_fim_jogo
     end
   end
 end
-
-#Mostra titulo e equipe
-  puts("->Jogo da Velha com Minimax!")
-  puts("\t•Equipe: •José Luiz")
-  puts("\t\t•Felippe")                                                          
 
 #Novo turno
 Game.new.turn
