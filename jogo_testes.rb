@@ -6,7 +6,8 @@
 
 class EstadoJogo
   #criacao do metodo de acesso para varias variaveis de instacia, leitura e escrita
-  attr_accessor :jogador_atual, :board, :moves, :rank
+  #Visiveis a todos os metodos
+  attr_accessor :jogador_atual, :board, :movimentos, :rank
 
 #classe Cache
   class Cache
@@ -30,8 +31,8 @@ class EstadoJogo
     #metodo self para chamar o metodo de acesso das variaveis de instancia
     self.jogador_atual = jogador_atual
     self.board = board
-    #inicializa o vetor chamado moves que vai receber as jogadas
-    self.moves = []
+    #inicializa o vetor chamado movimentos que vai receber as jogadas
+    self.movimentos = []
   end
   
   #Recebe true or false
@@ -46,7 +47,7 @@ class EstadoJogo
   #retorna 0 se a = b
   #retorna 1 se a > b
 
-    moves.max{ |a, b| a.rank <=> b.rank }
+    movimentos.max{ |a, b| a.rank <=> b.rank }
   end
 
 #Metodo para retornar quem foi o vencedor
@@ -78,7 +79,7 @@ class EstadoJogo
 #Metodo para mostrar os resultados intermediarios para cada jogada "simulada"
   def resultado_intermediario
     # recursion, baby
-    ranks = moves.collect{ |estado_jogo| estado_jogo.rank }
+    ranks = movimentos.collect{ |estado_jogo| estado_jogo.rank }
     if jogador_atual == 'X'
       #retorna ranks.max se for o computador
       ranks.max
@@ -141,12 +142,11 @@ class ArvoreJogo
 
         next_board[indice_posicao] = estado_jogo.jogador_atual
 
-        #sit proximo recebe o tabuleiro do proximo jogo
+        #sit proximo recebe a simulacao do proximo jogo
         sit_proximo = (EstadoJogo.cache.states[next_board] ||= EstadoJogo.new(next_player, next_board))
 
 
-
-        estado_jogo.moves << sit_proximo
+        estado_jogo.movimentos << sit_proximo
 
         #Sendo um algoritmo recursivo ele  chama o proprio metodo
         #depois de ja ter gerado um das possibilidade
@@ -235,7 +235,7 @@ class Jogo
     #Le entrada do usuario
     escolha = gets
     #Confere se o movimento é valido, retorna true ou false
-    move = @estado_jogo.moves.find{ |estado_jogo| estado_jogo.board[escolha.to_i] == 'O' }
+    move = @estado_jogo.movimentos.find{ |estado_jogo| estado_jogo.board[escolha.to_i] == 'O' }
     if move#Caso seja uma posicao valida
       @estado_jogo = move
     else#Retorna metodo ate posicao valida
