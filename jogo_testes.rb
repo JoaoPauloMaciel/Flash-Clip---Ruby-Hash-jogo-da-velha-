@@ -133,13 +133,13 @@ class ArvoreJogo
     #Se o atual for X, o proximo é O senao o Proximo é X
     next_player = (game_state.jogador_atual == 'X' ? 'O' : 'X')
 
-    game_state.board.each_with_index do |player_at_position, position|
+    game_state.board.each_with_index do |player_at_position, indice_posicao|
 
       unless player_at_position
         #uso do metodo dup para duplicar o jogo atual
         next_board = game_state.board.dup
 
-        next_board[position] = game_state.jogador_atual
+        next_board[indice_posicao] = game_state.jogador_atual
 
         #sit proximo recebe o tabuleiro do proximo jogo
         sit_proximo = (EstadoJogo.cache.states[next_board] ||= EstadoJogo.new(next_player, next_board))
@@ -229,13 +229,13 @@ class Jogo
     puts saida
   end
 
-#Metodo para pegar posicao escolhida pelo jogador
+  #Metodo para pegar posicao escolhida pelo jogador humano
   def jogada_humano
     puts "Digite o numero para marcar:"
     #Le entrada do usuario
-    position = gets
+    escolha = gets
     #Confere se o movimento é valido, retorna true ou false
-    move = @game_state.moves.find{ |game_state| game_state.board[position.to_i] == 'O' }
+    move = @game_state.moves.find{ |game_state| game_state.board[escolha.to_i] == 'O' }
     if move#Caso seja uma posicao valida
       @game_state = move
     else#Retorna metodo ate posicao valida
