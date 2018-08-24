@@ -95,9 +95,6 @@ class GameTree
   def generate
     #Ja passa o jogador atual e o tabuleiro no metodo initialize
     initial_game_state = GameState.new('X', Array.new(9))
-    puts "qual é o retorno:"
-    puts initial_game_state
-    puts "fim do retorno"
     generate_moves(initial_game_state)
     initial_game_state
   end
