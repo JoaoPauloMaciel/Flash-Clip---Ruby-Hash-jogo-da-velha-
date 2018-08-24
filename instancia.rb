@@ -12,6 +12,7 @@ end
 
 roger = Cachorro.new
 
+
 roger.setar_nome
 roger.falar
 
