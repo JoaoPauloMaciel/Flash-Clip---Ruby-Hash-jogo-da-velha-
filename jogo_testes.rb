@@ -2,7 +2,7 @@ require 'benchmark'
 
 class GameState
   #criacao do metodo de acesso para varias variaveis de instacia, leitura e escrita
-  attr_accessor :current_player, :board, :moves, :rank
+  attr_accessor :jogador_atual, :board, :moves, :rank
 
   class Cache
     #criacao do metodo de acesso, leitura e escrita
@@ -21,9 +21,9 @@ class GameState
 
   #metodo initialize, para definicao dos parametros
   #quando for criado um objeto ja chama esse metodo, automaticamente
-  def initialize(current_player, board)
+  def initialize(jogador_atual, board)
     #metodo self para chamar o metodo de acesso das variaveis de instancia
-    self.current_player = current_player
+    self.jogador_atual = jogador_atual
     self.board = board
     self.moves = []
   end
@@ -33,7 +33,12 @@ class GameState
   end
 
   #Metodo chamando quando o turno pertence ao computador
-  def next_move
+  def proximo_movimento
+  #uso da nave espacial (<=>)
+  #retorna -1 se a < b
+  #retorna 0 se a = b
+  #retorna 1 se a > b
+
     moves.max{ |a, b| a.rank <=> b.rank }
   end
 
@@ -60,7 +65,7 @@ class GameState
   def intermediate_state_rank
     # recursion, baby
     ranks = moves.collect{ |game_state| game_state.rank }
-    if current_player == 'X'
+    if jogador_atual == 'X'
       #retorna ranks.max se for o computador
       ranks.max
     else
@@ -103,11 +108,11 @@ class ArvoreJogo
   end
 
   def generate_moves(game_state)
-    next_player = (game_state.current_player == 'X' ? 'O' : 'X')
+    next_player = (game_state.jogador_atual == 'X' ? 'O' : 'X')
     game_state.board.each_with_index do |player_at_position, position|
       unless player_at_position
         next_board = game_state.board.dup
-        next_board[position] = game_state.current_player
+        next_board[position] = game_state.jogador_atual
 
         next_game_state = (GameState.cache.states[next_board] ||= GameState.new(next_player, next_board))
         game_state.moves << next_game_state
@@ -142,9 +147,9 @@ class Game
 
     #checa a quem pertence a proxima jogada
     #Se pertence 
-    if @game_state.current_player == 'X'
+    if @game_state.jogador_atual == 'X'
       puts "\n•••••••••••••••••••••••"
-      @game_state = @game_state.next_move
+      @game_state = @game_state.proximo_movimento
       puts "Jogada do computador(X):"
       #mostra o tabuleiro com a jogada do computador
       mostra_tabuleiro
