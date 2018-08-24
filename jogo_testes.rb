@@ -4,7 +4,6 @@
 #Felippe Mangueira da Silva Sposito
 #Trabalho 1 de Inteligencia Artificial - 2018
 
-
 class EstadoJogo
   #criacao do metodo de acesso para varias variaveis de instacia, leitura e escrita
   attr_accessor :jogador_atual, :board, :moves, :rank
@@ -31,6 +30,7 @@ class EstadoJogo
     #metodo self para chamar o metodo de acesso das variaveis de instancia
     self.jogador_atual = jogador_atual
     self.board = board
+    #inicializa o vetor chamado moves que vai receber as jogadas
     self.moves = []
   end
   
@@ -117,6 +117,7 @@ class EstadoJogo
 end
 
 #Classe que verifica as possibilidades futuras
+#Aqui que acontece a magica do minimax
 class ArvoreJogo
   def generate
     #Ja passa o jogador atual e o tabuleiro no metodo initialize
@@ -126,19 +127,37 @@ class ArvoreJogo
   end
 
 
-
+  #Metodo recursivo para gerar os movimentos futuros e avaliar resultados
   def gerador_movimentos(game_state)
+    #Encontra qual é o proximo jogador por meio do atual
+    #Se o atual for X, o proximo é O senao o Proximo é X
     next_player = (game_state.jogador_atual == 'X' ? 'O' : 'X')
+
     game_state.board.each_with_index do |player_at_position, position|
+
       unless player_at_position
+        #uso do metodo dup para duplicar o jogo atual
         next_board = game_state.board.dup
+
         next_board[position] = game_state.jogador_atual
-        next_game_state = (EstadoJogo.cache.states[next_board] ||= EstadoJogo.new(next_player, next_board))
-        game_state.moves << next_game_state
-        gerador_movimentos(next_game_state)
+
+        #sit proximo recebe o tabuleiro do proximo jogo
+        sit_proximo = (EstadoJogo.cache.states[next_board] ||= EstadoJogo.new(next_player, next_board))
+
+
+
+        game_state.moves << sit_proximo
+
+        #Sendo um algoritmo recursivo ele  chama o proprio metodo
+        #depois de ja ter gerado um das possibilidade
+        gerador_movimentos(sit_proximo)
       end
+
     end
+
   end
+
+
 end
 
 #Classe jogo
