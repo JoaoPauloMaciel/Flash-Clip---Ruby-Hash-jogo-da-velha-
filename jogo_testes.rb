@@ -1,6 +1,11 @@
-require 'benchmark'
+#Jogo da Velha usando Minimax
+#Implementado por:
+#José Luiz Corrêa Junior
+#Felippe Mangueira da Silva Sposito
+#Trabalho 1 de Inteligencia Artificial - 2018
 
-class GameState
+
+class EstadoJogo
   #criacao do metodo de acesso para varias variaveis de instacia, leitura e escrita
   attr_accessor :jogador_atual, :board, :moves, :rank
 
@@ -115,7 +120,7 @@ end
 class ArvoreJogo
   def generate
     #Ja passa o jogador atual e o tabuleiro no metodo initialize
-    initial_game_state = GameState.new('X', Array.new(9))
+    initial_game_state = EstadoJogo.new('X', Array.new(9))
     gerador_movimentos(initial_game_state)
     initial_game_state
   end
@@ -128,7 +133,7 @@ class ArvoreJogo
       unless player_at_position
         next_board = game_state.board.dup
         next_board[position] = game_state.jogador_atual
-        next_game_state = (GameState.cache.states[next_board] ||= GameState.new(next_player, next_board))
+        next_game_state = (EstadoJogo.cache.states[next_board] ||= EstadoJogo.new(next_player, next_board))
         game_state.moves << next_game_state
         gerador_movimentos(next_game_state)
       end
@@ -140,8 +145,9 @@ end
 class Game
   #Metodo para iniciar jogo
   def initialize
-    #Metodo benchmark para mostrar quanto demorou para a primeira busca
-    puts Benchmark.measure{ @game_state = @initial_game_state = ArvoreJogo.new.generate }
+    
+  @game_state = @initial_game_state = ArvoreJogo.new.generate
+
   end
 
   #Metodo para caso seja fim de jogo
