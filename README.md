@@ -40,7 +40,7 @@ Verifica se é final de jogo, e, caso não seja, localiza o dono do turno atual 
 ### Classe `resultados_intermediarios`
 Classe responsável por realizar os cálculos (que faz o trabalho duro, por assim dizer) pois calcula todas as possíveis jogadas, e diminui as possibilidades à cada jogada do usuário.
 
-####Subclasse recursiva
+#### Subclasse recursiva
 ~~~
 def resultado_intermediario
     ranks = movimentos.collect{ |estado_jogo| estado_jogo.rank }
@@ -76,7 +76,7 @@ Basicamente a classe EstadoJogo é a classe que verifica, aloca e  maneja a mem�
   end
 ~~~
 e `Initialize`
-
+(esse metodo é acionado automaticamente com uma criação de um objeto instanciando a classe que ele pertence, isso é padrão da linguagem)
 ~~~
   def initialize(jogador_atual, tabuleiro)
     #metodo self para chamar o metodo de acesso das variaveis de instancia
